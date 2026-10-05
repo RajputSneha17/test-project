@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.goog-te-banner-frame,
+iframe.goog-te-banner-frame,
+.goog-te-banner,
+.VIpgJd-Z43wfe-AQuR3b,
+.VIpgJd-Z43wfe-AQuR3b-sn54A {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+#goog-gt-tt,
+.goog-te-balloon-part,
+.goog-text-highlight,
+.goog-te-spinner-pos,
+.VIpgJd-yA01Ze-xl03Ac-l4gvh {
+  display: none !important;
+  box-shadow: none !important;
+}
+
+#google_translate_element {
+  display: none !important;
+}
+
+.skiptranslate {
+  display: none !important;
+}
+
+body > .skiptranslate {
+  display: none !important;
+}
+/* PFC Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f7ee;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6fa968, #3f7545);
+  border-radius: 999px;
+  border: 2px solid #f1f7ee;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #5f9b59, #285a31);
+}
