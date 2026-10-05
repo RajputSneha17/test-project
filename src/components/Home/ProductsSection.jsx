@@ -101,7 +101,7 @@ const ProductsSection = ({ url }) => {
       </div>
 
       {/* Products */}
-      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
         {filteredProducts.map((item) => {
           const isWishlisted = wishlist.some(
             (product) => product._id === item._id,
@@ -124,51 +124,51 @@ const ProductsSection = ({ url }) => {
                   <h2 className="text-xl font-semibold mt-3">{item.name}</h2>
 
                   {/* Rating */}
-      {/* <div className="flex items-center gap-1 mt-2"> */}
-      {/* <span className="text-sm text-gray-500 ml-1"> */}
-      {/* ({Number(item.rating || 0).toFixed(1)}) */}
-      {/* <StarRating rating={item.rating} /> */}
-      {/* </span> */}
-      {/* </div> */}
+                  <div className="flex items-center gap-1 mt-2">
+                    <span className="text-sm text-gray-500 ml-1">
+                      {/* ({Number(item.rating || 0).toFixed(1)}) */}
+                      <StarRating rating={item.rating} />
+                    </span>
+                  </div>
 
-      {/* <p className="text-gray-500 text-sm mt-2">{item.desc}</p>
+                  <p className="text-gray-500 text-sm mt-2">{item.desc}</p>
 
                   <div className="flex items-center justify-between mt-5">
                     {Number(item.price) > 0 && (
                       <p className="text-2xl font-bold text-amber-700">
                         ₹{item.price}
                       </p>
-                    )} */}
+                    )}
 
-      {/* Wishlist */}
-      {/* <button
+                    {/* Wishlist */}
+                    <button
                       onClick={(e) => {
                         e.preventDefault();
 
                         if (isWishlisted) {
-                          // removeFromWishlist(item._id);
+                          removeFromWishlist(item._id);
                         } else {
                           addToWishlist(item);
                         }
-                      }} 
-                    //   className="p-2 cursor-pointer rounded-full border border-gray-300 hover:bg-gray-100 transition"
-                    // >
-                    //   <Heart
-                    //     size={22}
-                    //     className={`transition ${
-                    //       isWishlisted
-      //                       ? "fill-red-500 text-red-500"
-      //                       : "text-gray-600"
-      //                   }`}
-      //                 />
-      //               </button>
-      //             </div>
-      //           </div>
-      //         </div>
-      //       </Link>
-      //     );
-      //   })}
-      // </div> */}
+                      }}
+                      className="p-2 cursor-pointer rounded-full border border-gray-300 hover:bg-gray-100 transition"
+                    >
+                      <Heart
+                        size={22}
+                        className={`transition ${
+                          isWishlisted
+                            ? "fill-red-500 text-red-500"
+                            : "text-gray-600"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
     </section>
   );
 };

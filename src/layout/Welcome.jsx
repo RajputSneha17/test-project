@@ -105,7 +105,7 @@ const Welcome = ({ onComplete }) => {
           <div className="pfc-logo-shine" />
         </div>
 
-        <div className="pfc-name">PACHAORI FOOD CORPORATION</div>
+        <div className="pfc-name">PACHAURI FOOD CORPORATION</div>
       </div>
 
       {/* BOTTOM LIGHT */}

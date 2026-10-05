@@ -77,7 +77,7 @@ const App = () => {
 
   return (
     <>
-      {showWelcome && <Welcome onFinish={() => setShowWelcome(false)} />}
+      {showWelcome && <Welcome onComplete={() => setShowWelcome(false)} />}
 
       {!showWelcome && (
         <>
