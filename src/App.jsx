@@ -13,7 +13,6 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Orders from "./pages/Orders";
 import Detail from "./pages/Detail";
-import Category from "./components/Category";
 
 import Auth from "./layout/Auth";
 import Rabby from "./layout/Rabby";
@@ -21,6 +20,13 @@ import Profile from "./pages/Profile";
 import Confirm from "./components/Cart/Confirm";
 import ContactUs from "./pages/ContactUs";
 import Wishlist from "./pages/Wishlist";
+
+import Grocery from "./components/Grocery";
+import FruitsVegetables from "./components/FruitsVegetables";
+import Dairy from "./components/Dairy";
+import Clothes from "./components/Clothes";
+import Household from "./components/Household";
+import Category from "./components/Category";
 
 import ScrollToTop from "./components/ScrollToTop";
 import MagicCursor from "./layout/MagicCursor";
@@ -99,7 +105,23 @@ const App = () => {
 
           <Route path="/category/pfc-special" element={<PfcSpecial />} />
 
-          <Route path="/category/:slug" element={<Category url={url} />} />
+          <Route path="/category/grocery" element={<Grocery url={url} />} />
+
+          <Route
+            path="/category/fruits-vegetables"
+            element={<FruitsVegetables url={url} />}
+          />
+
+          <Route path="/category/dairy" element={<Dairy url={url} />} />
+
+          <Route path="/category/clothes" element={<Clothes url={url} />} />
+
+          <Route path="/category/household" element={<Household url={url} />} />
+
+          <Route
+            path="/category/:slug/:subcategory"
+            element={<Category url={url} />}
+          />
         </Routes>
       </main>
 
