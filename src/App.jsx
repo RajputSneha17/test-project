@@ -77,57 +77,66 @@ const App = () => {
 
   return (
     <>
-      <ScrollToTop />
+      {showWelcome && <Welcome onFinish={() => setShowWelcome(false)} />}
 
-      <MagicCursor />
+      {!showWelcome && (
+        <>
+          <ScrollToTop />
 
-      <Nav />
+          <MagicCursor />
 
-      <main className="pt-20">
-        <Routes>
-          <Route path="/" element={<Home url={url} />} />
+          <Nav />
 
-          <Route path="/about" element={<About />} />
+          <main className="pt-20">
+            <Routes>
+              <Route path="/" element={<Home url={url} />} />
 
-          <Route path="/orders" element={<Orders url={url} />} />
+              <Route path="/about" element={<About />} />
 
-          <Route path="/detail/:id" element={<Detail url={url} />} />
+              <Route path="/orders" element={<Orders url={url} />} />
 
-          <Route path="/register" element={<Auth url={url} />} />
+              <Route path="/detail/:id" element={<Detail url={url} />} />
 
-          <Route path="/profile" element={<Profile url={url} />} />
+              <Route path="/register" element={<Auth url={url} />} />
 
-          <Route path="/confirm" element={<Confirm />} />
+              <Route path="/profile" element={<Profile url={url} />} />
 
-          <Route path="/contactUs" element={<ContactUs url={url} />} />
+              <Route path="/confirm" element={<Confirm />} />
 
-          <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/contactUs" element={<ContactUs url={url} />} />
 
-          <Route path="/category/pfc-special" element={<PfcSpecial />} />
+              <Route path="/wishlist" element={<Wishlist />} />
 
-          <Route path="/category/grocery" element={<Grocery url={url} />} />
+              <Route path="/category/pfc-special" element={<PfcSpecial />} />
 
-          <Route
-            path="/category/fruits-vegetables"
-            element={<FruitsVegetables url={url} />}
-          />
+              <Route path="/category/grocery" element={<Grocery url={url} />} />
 
-          <Route path="/category/dairy" element={<Dairy url={url} />} />
+              <Route
+                path="/category/fruits-vegetables"
+                element={<FruitsVegetables url={url} />}
+              />
 
-          <Route path="/category/clothes" element={<Clothes url={url} />} />
+              <Route path="/category/dairy" element={<Dairy url={url} />} />
 
-          <Route path="/category/household" element={<Household url={url} />} />
+              <Route path="/category/clothes" element={<Clothes url={url} />} />
 
-          <Route
-            path="/category/:slug/:subcategory"
-            element={<Category url={url} />}
-          />
-        </Routes>
-      </main>
+              <Route
+                path="/category/household"
+                element={<Household url={url} />}
+              />
 
-      <Rabby />
+              <Route
+                path="/category/:slug/:subcategory"
+                element={<Category url={url} />}
+              />
+            </Routes>
+          </main>
 
-      <Footer />
+          <Rabby />
+
+          <Footer />
+        </>
+      )}
     </>
   );
 };
