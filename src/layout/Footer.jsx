@@ -4,12 +4,14 @@ import { Truck, RotateCcw, ShieldCheck, Headphones } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#fdf9f5] mt-20 border-t border-gray-200">
+    <footer className="bg-[#f7fbf3] mt-20 border-t border-gray-200">
       {/* Footer */}
       <div className="w-[90%] mx-auto py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Logo */}
         <div>
-          <h1 className="text-4xl font-bold font-serif">Silken</h1>
+          <h1 className="text-xl font-bold font-serif">
+            PACHAURI FOOD CORPORATION (PFC)
+          </h1>
 
           <p className="text-gray-600 mt-5 leading-8">
             Healthy vegan food made with love. Discover premium tofu, soy milk,

@@ -28,10 +28,7 @@ const Nav = () => {
       name: "Fruits & Vegetables",
       path: "/category/fruits-vegetables",
     },
-    {
-      name: "Soya Products",
-      path: "/category/soya-products",
-    },
+
     {
       name: "Dairy",
       path: "/category/dairy",

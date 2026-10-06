@@ -3,14 +3,15 @@ import { ExternalLink } from "lucide-react";
 
 const OtherWeb = () => {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-24 bg-[#f7fbf3]">
       <div className="w-[90%] max-w-7xl mx-auto">
+        {/* Heading */}
         <div className="text-center mb-16">
-          <p className="uppercase tracking-[4px] text-orange-600 font-semibold">
+          <p className="uppercase tracking-[4px] text-green-700 font-semibold">
             Our Network
           </p>
 
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-3">
+          <h2 className="text-4xl md:text-5xl font-bold text-[#1f3d2b] mt-3">
             Explore Our Other Platforms
           </h2>
 
@@ -21,16 +22,15 @@ const OtherWeb = () => {
           </p>
         </div>
 
-        <div className="divide-y divide-orange-100 border-y border-orange-100">
+        <div className="divide-y divide-green-100 border-y border-green-100">
           {/* R Solution */}
-
           <div className="grid lg:grid-cols-2 gap-12 py-14 items-center">
             <div>
-              <span className="text-orange-600 font-semibold">
+              <span className="text-green-700 font-semibold">
                 Technology & IT Solutions
               </span>
 
-              <h3 className="text-4xl font-bold text-gray-900 mt-3">
+              <h3 className="text-4xl font-bold text-[#1f3d2b] mt-3">
                 R Solution
               </h3>
 
@@ -44,8 +44,8 @@ const OtherWeb = () => {
               </p>
             </div>
 
-            <div className="lg:pl-16 border-l-0 lg:border-l border-orange-100">
-              <h4 className="text-lg font-semibold text-gray-900">
+            <div className="lg:pl-16 border-l-0 lg:border-l border-green-100">
+              <h4 className="text-lg font-semibold text-[#1f3d2b]">
                 Official Website
               </h4>
 
@@ -53,23 +53,32 @@ const OtherWeb = () => {
                 href="https://rsolution2011.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-semibold text-lg"
+                className="
+                  mt-5
+                  inline-flex
+                  items-center
+                  gap-2
+                  text-green-700
+                  hover:text-green-900
+                  font-semibold
+                  text-lg
+                  transition
+                "
               >
-                https://rsolution2011.com/
+                rsolution2011.com
                 <ExternalLink size={18} />
               </a>
             </div>
           </div>
 
           {/* PTH Events */}
-
           <div className="grid lg:grid-cols-2 gap-12 py-14 items-center">
             <div>
-              <span className="text-orange-600 font-semibold">
+              <span className="text-green-700 font-semibold">
                 Wedding & Event Management
               </span>
 
-              <h3 className="text-4xl font-bold text-gray-900 mt-3">
+              <h3 className="text-4xl font-bold text-[#1f3d2b] mt-3">
                 PTH Events
               </h3>
 
@@ -81,8 +90,8 @@ const OtherWeb = () => {
               </p>
             </div>
 
-            <div className="lg:pl-16 border-l-0 lg:border-l border-orange-100">
-              <h4 className="text-lg font-semibold text-gray-900">
+            <div className="lg:pl-16 border-l-0 lg:border-l border-green-100">
+              <h4 className="text-lg font-semibold text-[#1f3d2b]">
                 Official Website
               </h4>
 
@@ -90,9 +99,19 @@ const OtherWeb = () => {
                 href="https://ptentevent.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-semibold text-lg"
+                className="
+                  mt-5
+                  inline-flex
+                  items-center
+                  gap-2
+                  text-green-700
+                  hover:text-green-900
+                  font-semibold
+                  text-lg
+                  transition
+                "
               >
-                https://ptentevent.com/
+                ptentevent.com
                 <ExternalLink size={18} />
               </a>
             </div>
