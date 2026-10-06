@@ -87,7 +87,7 @@ const App = () => {
 
           <Nav />
 
-          <main className="pt-20">
+          <main className="pt-30">
             <Routes>
               <Route path="/" element={<Home url={url} />} />
 
