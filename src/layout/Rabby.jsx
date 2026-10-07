@@ -111,7 +111,7 @@ const Rabby = () => {
       {/* Floating Button */}
       <button
         onClick={() => setOpen(!open)}
-        className="group fixed bottom-5 right-5 z-[9999] flex h-[62px] w-[62px] items-center justify-center rounded-full bg-gradient-to-br from-[#285a31] to-[#4d8b55] text-white shadow-[0_10px_35px_rgba(40,90,49,0.35)] transition-all duration-300 hover:scale-110"
+        className="group fixed bottom-24 right-5 md:bottom-5 z-[9999] flex h-[62px] w-[62px] items-center justify-center rounded-full bg-gradient-to-br from-[#285a31] to-[#4d8b55] text-white shadow-[0_10px_35px_rgba(40,90,49,0.35)] transition-all duration-300 hover:scale-110"
       >
         {!open && (
           <span className="absolute inset-0 rounded-full bg-[#75a96e] opacity-30 animate-ping" />

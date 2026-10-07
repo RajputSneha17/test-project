@@ -116,6 +116,59 @@ const OtherWeb = () => {
               </a>
             </div>
           </div>
+
+          {/* Vasudev Sansthan */}
+          <div className="grid lg:grid-cols-2 gap-12 py-14 items-center">
+            <div>
+              <span className="text-green-700 font-semibold">
+                Social Welfare & Community Support
+              </span>
+
+              <h3 className="text-4xl font-bold text-[#1f3d2b] mt-3">
+                Vasudev Sansthan
+              </h3>
+
+              <p className="mt-6 text-gray-600 leading-8">
+                Vasudev Sansthan is dedicated to supporting and empowering
+                people in need. The organization works towards the welfare of
+                senior citizens, students, girls, and underprivileged
+                communities by providing support, opportunities, and assistance
+                to help them build a better and more independent future.
+              </p>
+
+              <p className="mt-4 text-gray-600 leading-8">
+                Through its social initiatives, Vasudev Sansthan aims to bring
+                positive change to society and create a more supportive,
+                inclusive, and compassionate community.
+              </p>
+            </div>
+
+            <div className="lg:pl-16 border-l-0 lg:border-l border-green-100">
+              <h4 className="text-lg font-semibold text-[#1f3d2b]">
+                Visit Official Website
+              </h4>
+
+              <a
+                href="https://vasudevsansthan.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="
+        mt-5
+        inline-flex
+        items-center
+        gap-2
+        text-green-700
+        hover:text-green-900
+        font-semibold
+        text-lg
+        transition
+      "
+              >
+                vasudevsansthan.org
+                <ExternalLink size={18} />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </section>

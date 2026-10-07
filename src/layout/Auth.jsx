@@ -5,8 +5,10 @@ import Swal from "sweetalert2";
 
 const Auth = ({ url }) => {
   const navigate = useNavigate();
+
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user");
+
   const [formData, setFormData] = useState({
     username: "",
     mobileNumber: "",
@@ -79,7 +81,7 @@ const Auth = ({ url }) => {
         icon: "success",
         title: "Registration Successful",
         text: data.message || "Your information has been saved successfully.",
-        confirmButtonColor: "#000",
+        confirmButtonColor: "#16a34a",
         confirmButtonText: "Continue",
       });
 
@@ -111,199 +113,224 @@ const Auth = ({ url }) => {
   const isRegistered = Boolean(token && user);
 
   return (
-    <>
+    <div className="min-h-screen bg-[#f7fbf3]">
       {isRegistered ? (
-        <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-          <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
-            <h2 className="text-2xl font-bold">Already Registered</h2>
+        /* =========================
+           ALREADY REGISTERED
+        ========================= */
+        <section className="min-h-screen flex items-center justify-center bg-[#f7fbf3] px-4 py-12">
+          <div className="max-w-md w-full bg-white rounded-2xl shadow-sm border border-green-100 p-8 text-center">
+            <div className="w-20 h-20 mx-auto rounded-full bg-[#dcebd2] flex items-center justify-center">
+              <span className="text-3xl text-green-700">✓</span>
+            </div>
 
-            <p className="text-gray-500 mt-3">
+            <h2 className="text-2xl font-bold text-[#1f3d2b] mt-6">
+              Already Registered
+            </h2>
+
+            <p className="text-gray-500 mt-3 leading-7">
               Your delivery information is already saved. You can manage it
               anytime from your profile.
             </p>
 
             <button
               onClick={() => navigate("/profile")}
-              className="mt-6 bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-xl"
+              className="mt-6 bg-[#d2e8c8] hover:bg-[#c4dfb9] text-black px-6 py-3 rounded-xl font-semibold transition"
             >
               Go to My Profile
             </button>
           </div>
         </section>
       ) : (
-        <section className="min-h-screen bg-gray-100 py-12 px-4">
-          <div className="max-w-2xl mx-auto bg-white shadow-xl rounded-2xl border border-gray-200 p-8">
-            <h1 className="text-3xl font-bold text-center">
-              Delivery Information
-            </h1>
+        /* =========================
+           REGISTRATION FORM
+        ========================= */
+        <section className="min-h-screen bg-[#f7fbf3] py-12 px-4">
+          <div className="max-w-2xl mx-auto">
+            {/* HEADING */}
+            <div className="text-center mb-8">
+              <h1 className="text-3xl sm:text-4xl font-bold text-[#1f3d2b]">
+                Delivery Information
+              </h1>
 
-            <p className="text-center text-gray-500 mt-2 mb-8">
-              Fill in your delivery details
-            </p>
+              <p className="text-green-700 mt-2">
+                Complete your details for a smooth shopping experience
+              </p>
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block mb-2 font-medium">
-                  <span className="text-red-500">*</span> Full Name
-                </label>
-
-                <input
-                  type="text"
-                  name="username"
-                  value={formData.username}
-                  onChange={handleChange}
-                  placeholder="Enter your full name"
-                  required
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-black"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-2 font-medium">
-                  <span className="text-red-500">*</span> Mobile Number
-                </label>
-
-                <input
-                  type="text"
-                  name="mobileNumber"
-                  value={formData.mobileNumber}
-                  onChange={handleChange}
-                  placeholder="Enter mobile number"
-                  maxLength={10}
-                  inputMode="numeric"
-                  required
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-black"
-                />
-              </div>
-
-              <div>
-                <label className="block mb-2 font-medium">
-                  Email <span className="text-gray-400">(Optional)</span>
-                </label>
-
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.address.email}
-                  onChange={handleChange}
-                  placeholder="Enter email"
-                  className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-black"
-                />
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-5">
+            {/* FORM CARD */}
+            <div className="bg-white shadow-sm rounded-2xl border border-green-100 p-6 sm:p-8">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* FULL NAME */}
                 <div>
-                  <label className="block mb-2 font-medium">
-                    <span className="text-red-500">*</span> House Number
+                  <label className="block mb-2 font-medium text-[#1f3d2b]">
+                    <span className="text-red-500">*</span> Full Name
                   </label>
 
                   <input
                     type="text"
-                    name="houseNumber"
-                    value={formData.address.houseNumber}
+                    name="username"
+                    value={formData.username}
                     onChange={handleChange}
-                    placeholder="House / Flat No."
+                    placeholder="Enter your full name"
                     required
-                    className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-black"
+                    className="w-full border border-green-100 rounded-xl px-4 py-3 outline-none bg-[#f7fbf3] focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
                   />
                 </div>
 
+                {/* MOBILE */}
                 <div>
-                  <label className="block mb-2 font-medium">
-                    <span className="text-red-500">*</span> Street
+                  <label className="block mb-2 font-medium text-[#1f3d2b]">
+                    <span className="text-red-500">*</span> Mobile Number
                   </label>
 
                   <input
                     type="text"
-                    name="street"
-                    value={formData.address.street}
+                    name="mobileNumber"
+                    value={formData.mobileNumber}
                     onChange={handleChange}
-                    placeholder="Street"
+                    placeholder="Enter mobile number"
+                    maxLength={10}
+                    inputMode="numeric"
                     required
-                    className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-black"
+                    className="w-full border border-green-100 rounded-xl px-4 py-3 outline-none bg-[#f7fbf3] focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
                   />
                 </div>
-              </div>
 
-              <div className="grid md:grid-cols-2 gap-5">
+                {/* EMAIL */}
                 <div>
-                  <label className="block mb-2 font-medium">
-                    <span className="text-red-500">*</span> City
+                  <label className="block mb-2 font-medium text-[#1f3d2b]">
+                    Email <span className="text-gray-400">(Optional)</span>
                   </label>
 
                   <input
-                    type="text"
-                    name="city"
-                    value={formData.address.city}
+                    type="email"
+                    name="email"
+                    value={formData.address.email}
                     onChange={handleChange}
-                    placeholder="City"
-                    required
-                    className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-black"
+                    placeholder="Enter email"
+                    className="w-full border border-green-100 rounded-xl px-4 py-3 outline-none bg-[#f7fbf3] focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
                   />
                 </div>
 
-                <div>
-                  <label className="block mb-2 font-medium">
-                    <span className="text-red-500">*</span> State
-                  </label>
+                {/* HOUSE + STREET */}
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block mb-2 font-medium text-[#1f3d2b]">
+                      <span className="text-red-500">*</span> House Number
+                    </label>
 
-                  <input
-                    type="text"
-                    name="state"
-                    value={formData.address.state}
-                    onChange={handleChange}
-                    placeholder="State"
-                    required
-                    className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-black"
-                  />
+                    <input
+                      type="text"
+                      name="houseNumber"
+                      value={formData.address.houseNumber}
+                      onChange={handleChange}
+                      placeholder="House / Flat No."
+                      required
+                      className="w-full border border-green-100 rounded-xl px-4 py-3 outline-none bg-[#f7fbf3] focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 font-medium text-[#1f3d2b]">
+                      <span className="text-red-500">*</span> Street
+                    </label>
+
+                    <input
+                      type="text"
+                      name="street"
+                      value={formData.address.street}
+                      onChange={handleChange}
+                      placeholder="Street"
+                      required
+                      className="w-full border border-green-100 rounded-xl px-4 py-3 outline-none bg-[#f7fbf3] focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div className="grid md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block mb-2 font-medium">
-                    <span className="text-red-500">*</span> Pin Code
-                  </label>
+                {/* CITY + STATE */}
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block mb-2 font-medium text-[#1f3d2b]">
+                      <span className="text-red-500">*</span> City
+                    </label>
 
-                  <input
-                    type="text"
-                    name="pinCode"
-                    value={formData.address.pinCode}
-                    onChange={handleChange}
-                    placeholder="Pin Code"
-                    required
-                    className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-black"
-                  />
+                    <input
+                      type="text"
+                      name="city"
+                      value={formData.address.city}
+                      onChange={handleChange}
+                      placeholder="City"
+                      required
+                      className="w-full border border-green-100 rounded-xl px-4 py-3 outline-none bg-[#f7fbf3] focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 font-medium text-[#1f3d2b]">
+                      <span className="text-red-500">*</span> State
+                    </label>
+
+                    <input
+                      type="text"
+                      name="state"
+                      value={formData.address.state}
+                      onChange={handleChange}
+                      placeholder="State"
+                      required
+                      className="w-full border border-green-100 rounded-xl px-4 py-3 outline-none bg-[#f7fbf3] focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block mb-2 font-medium">
-                    <span className="text-red-500">*</span> Landmark
-                  </label>
+                {/* PIN + LANDMARK */}
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block mb-2 font-medium text-[#1f3d2b]">
+                      <span className="text-red-500">*</span> Pin Code
+                    </label>
 
-                  <input
-                    type="text"
-                    name="landmark"
-                    value={formData.address.landmark}
-                    onChange={handleChange}
-                    placeholder="Nearby Landmark"
-                    required
-                    className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none focus:border-black"
-                  />
+                    <input
+                      type="text"
+                      name="pinCode"
+                      value={formData.address.pinCode}
+                      onChange={handleChange}
+                      placeholder="Pin Code"
+                      required
+                      className="w-full border border-green-100 rounded-xl px-4 py-3 outline-none bg-[#f7fbf3] focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 font-medium text-[#1f3d2b]">
+                      <span className="text-red-500">*</span> Landmark
+                    </label>
+
+                    <input
+                      type="text"
+                      name="landmark"
+                      value={formData.address.landmark}
+                      onChange={handleChange}
+                      placeholder="Nearby Landmark"
+                      required
+                      className="w-full border border-green-100 rounded-xl px-4 py-3 outline-none bg-[#f7fbf3] focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-100 transition"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <button
-                type="submit"
-                className="w-full bg-black hover:bg-gray-800 text-white py-3 rounded-xl font-semibold transition"
-              >
-                Save Information
-              </button>
-            </form>
+                {/* SUBMIT */}
+                <button
+                  type="submit"
+                  className="w-full bg-[#d2e8c8] hover:bg-[#c4dfb9] text-black py-3 rounded-xl font-semibold transition"
+                >
+                  Save Information
+                </button>
+              </form>
+            </div>
           </div>
         </section>
       )}
-    </>
+    </div>
   );
 };
 
