@@ -15,22 +15,13 @@ const Orders = ({ url }) => {
     try {
       setLoading(true);
 
-      const savedUser = localStorage.getItem("user");
-
-      if (!savedUser) {
-        return;
-      }
-
-      const user = JSON.parse(savedUser);
-      const mobile = user?.mobileNumber || user?.mobile;
-
-      if (!mobile) {
+      const token = localStorage.getItem("token");
+      if (!token) {
         setOrders([]);
         return;
       }
-
-      const { data } = await axios.post(`${url}/order/fetch-customer`, {
-        mobile,
+      const { data } = await axios.get(`${url}/order/my-orders`, {
+        headers: { token },
       });
 
       if (data.success) {
@@ -76,7 +67,7 @@ const Orders = ({ url }) => {
         <div className="space-y-8">
           {orders.map((order) => (
             <div
-              key={order._id}
+              key={order.publicId || order.id || order._id}
               className="
                 bg-white
                 border border-green-100
@@ -92,7 +83,7 @@ const Orders = ({ url }) => {
                     <p className="text-xs text-gray-500">Order ID</p>
 
                     <h3 className="font-semibold text-[#1f3d2b]">
-                      {order._id.slice(-8)}
+                      {(order.publicId || order.id || order._id).slice(-8)}
                     </h3>
                   </div>
 

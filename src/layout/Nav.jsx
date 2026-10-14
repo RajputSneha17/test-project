@@ -1,46 +1,69 @@
-import { User, Heart } from "lucide-react";
-import { useContext } from "react";
+import {
+  User,
+  Heart,
+  ShoppingCart,
+  ChevronDown,
+  ShieldCheck,
+  Users,
+  LogOut,
+} from "lucide-react";
+import { useContext, useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import { WishlistContext } from "../context/WishlistContext";
 import GoogleTranslate from "../components/GoogleTranslate";
 import MobileNav from "./MobileNav";
+import { CartContext } from "../context/CartContext";
+import { API_URL } from "../services/api";
 
 const Nav = () => {
   const { wishlist } = useContext(WishlistContext);
-
+  const { cart } = useContext(CartContext);
   const navigate = useNavigate();
+  const totalCartItems = cart.reduce(
+    (total, item) => total + (item.qty || 0),
+    0,
+  );
+  const [categories, setCategories] = useState([]);
 
   const savedUser = localStorage.getItem("user");
 
   const totalWishlist = wishlist.length;
 
-  const categories = [
-    {
-      name: "PFC Special",
-      path: "/category/pfc-special",
-    },
-    {
-      name: "Grocery",
-      path: "/category/grocery",
-    },
-    {
-      name: "Fruits & Vegetables",
-      path: "/category/fruits-vegetables",
-    },
-    {
-      name: "Dairy",
-      path: "/category/dairy",
-    },
-    {
-      name: "Clothes",
-      path: "/category/clothes",
-    },
-    {
-      name: "Household",
-      path: "/category/household",
-    },
-  ];
+  const url = API_URL;
+
+  // ==============================
+  // Fetch Categories
+  // ==============================
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${url}/category/show`);
+
+        if (response.data?.success) {
+          setCategories(response.data.categories || []);
+        } else if (Array.isArray(response.data)) {
+          setCategories(response.data);
+        } else {
+          setCategories(response.data?.categories || []);
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+
+    navigate("/register");
+    window.location.reload();
+  };
 
   return (
     <>
@@ -60,17 +83,13 @@ const Nav = () => {
             px-5
             md:px-10
             lg:px-20
-
             flex
             items-center
             justify-between
-
             bg-[#f7fbf3]/95
             backdrop-blur-xl
-
             border-b
             border-[#dfead8]
-
             shadow-[0_4px_20px_rgba(55,90,45,0.06)]
           "
         >
@@ -233,60 +252,94 @@ const Nav = () => {
             {/* Divider */}
 
             <div className="h-7 w-px bg-[#d8e5d2]" />
-
             {/* User */}
-
             {savedUser ? (
-              <button
-                onClick={() => navigate("/profile")}
-                className="
-                  flex
-                  items-center
-                  gap-2
-                  px-4
-                  py-2.5
+              <div className="relative group">
+                <button
+                  onClick={() => navigate("/profile")}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-[#315c38] hover:bg-[#eaf4e5] transition cursor-pointer"
+                >
+                  <User size={18} />
+                  Profile
+                  <ChevronDown
+                    size={15}
+                    className="transition-transform duration-200 group-hover:rotate-180"
+                  />
+                </button>
 
-                  rounded-xl
+                {/* Dropdown */}
+                <div className="absolute right-0 top-full pt-2 w-56 z-50 invisible opacity-0 translate-y-2 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200">
+                  <div className="bg-[#f7fbf3] border border-[#dce9d6] rounded-xl shadow-lg p-2">
+                    {/* My Profile */}
+                    <button
+                      onClick={() => navigate("/profile")}
+                      className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-[#315c38] hover:bg-[#eaf4e5] transition text-left"
+                    >
+                      <User size={17} />
+                      My Profile
+                    </button>
 
-                  text-sm
-                  font-medium
-                  text-[#315c38]
+                    {/* Order for Someone Else */}
+                    <button
+                      onClick={() => navigate("/OrderForSomeoneElse")}
+                      className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-[#315c38] hover:bg-[#eaf4e5] transition text-left"
+                    >
+                      <Users size={17} />
+                      Order for Someone Else
+                    </button>
 
-                  hover:bg-[#eaf4e5]
+                    <div className="my-1 border-t border-[#dce9d6]" />
 
-                  transition
-                  cursor-pointer
-                "
-              >
-                <User size={18} />
-                Profile
-              </button>
+                    {/* Logout */}
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-red-600 hover:bg-red-50 transition text-left"
+                    >
+                      <LogOut size={17} />
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              </div>
             ) : (
               <button
                 onClick={() => navigate("/register")}
-                className="
-                  flex
-                  items-center
-                  gap-2
-                  px-4
-                  py-2.5
-
-                  rounded-xl
-
-                  text-sm
-                  font-medium
-                  text-[#315c38]
-
-                  hover:bg-[#eaf4e5]
-
-                  transition
-                  cursor-pointer
-                "
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-[#315c38] hover:bg-[#eaf4e5] transition cursor-pointer"
               >
                 <User size={18} />
                 Register
               </button>
             )}
+            {/* Cart */}
+
+            <NavLink
+              to="/cart"
+              className={({ isActive }) =>
+                `
+    relative
+    flex
+    items-center
+    justify-center
+    w-11
+    h-11
+    rounded-xl
+    transition
+    ${
+      isActive
+        ? "bg-[#285a31] text-white shadow-[0_4px_12px_rgba(40,90,49,0.20)]"
+        : "text-[#315c38] hover:bg-[#eaf4e5]"
+    }
+    `
+              }
+            >
+              <ShoppingCart size={25} />
+
+              {totalCartItems > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-[#d95c4f] text-white flex items-center justify-center text-[10px] font-bold">
+                  {totalCartItems}
+                </span>
+              )}
+            </NavLink>
 
             {/* Wishlist */}
 
@@ -295,16 +348,12 @@ const Nav = () => {
               className={({ isActive }) =>
                 `
                 relative
-
                 flex
                 items-center
                 justify-center
-
                 w-11
                 h-11
-
                 rounded-xl
-
                 transition
 
                 ${
@@ -323,20 +372,15 @@ const Nav = () => {
                     absolute
                     -top-1
                     -right-1
-
                     min-w-5
                     h-5
                     px-1
-
                     rounded-full
-
                     bg-[#d95c4f]
                     text-white
-
                     flex
                     items-center
                     justify-center
-
                     text-[10px]
                     font-bold
                   "
@@ -349,21 +393,17 @@ const Nav = () => {
         </div>
 
         {/* ===================================================
-            CATEGORY BAR
+            DYNAMIC CATEGORY BAR
         =================================================== */}
 
         <div
           className="
             hidden
             md:block
-
             w-full
-
             bg-[#edf6e9]
-
             border-b
             border-[#dfead8]
-
             shadow-[0_3px_12px_rgba(55,90,45,0.04)]
           "
         >
@@ -371,34 +411,29 @@ const Nav = () => {
             className="
               max-w-[1500px]
               mx-auto
-
               px-6
               lg:px-16
-
               h-[50px]
-
               flex
               items-center
               justify-center
-
               gap-2
+              overflow-x-auto
+              scrollbar-hide
             "
           >
             {categories.map((category) => (
               <NavLink
-                key={category.name}
-                to={category.path}
+                key={category.id}
+                to={`/category/${category.id}`}
                 className={({ isActive }) =>
                   `
                   whitespace-nowrap
                   px-4
                   py-2
-
                   rounded-lg
-
                   text-[13px]
                   font-medium
-
                   transition-all
                   duration-200
 

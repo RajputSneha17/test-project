@@ -6,28 +6,54 @@ const MagicCursor = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    const cursor = cursorRef.current;
 
-    const isMobile = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const mediaQuery = window.matchMedia("(pointer: fine)");
+    const isMobile =
+      !mediaQuery.matches ||
+      "ontouchstart" in window ||
+      navigator.maxTouchPoints > 0;
 
     let width = window.innerWidth;
     let height = window.innerHeight;
+    let animationFrame;
+
+    const particles = [];
+    const MAX_PARTICLES = 250;
 
     const resize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
 
-      canvas.width = width;
-      canvas.height = height;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
     resize();
 
-    const particles = [];
+    const addParticle = (particle) => {
+      if (particles.length >= MAX_PARTICLES) {
+        particles.shift();
+      }
+
+      particles.push(particle);
+    };
 
     const createMobileStars = (x, y) => {
       for (let i = 0; i < 4; i++) {
-        particles.push({
+        addParticle({
           x: x + (Math.random() - 0.5) * 20,
           y: y + (Math.random() - 0.5) * 20,
           vx: (Math.random() - 0.5) * 0.8,
@@ -43,8 +69,7 @@ const MagicCursor = () => {
     const drawStar = (x, y, size, alpha) => {
       ctx.save();
 
-      ctx.globalAlpha = alpha;
-
+      ctx.globalAlpha = Math.max(0, alpha);
       ctx.shadowBlur = 12;
       ctx.shadowColor = "rgba(63, 143, 70, 0.9)";
 
@@ -52,17 +77,11 @@ const MagicCursor = () => {
 
       ctx.moveTo(x, y - size);
       ctx.lineTo(x + size * 0.25, y - size * 0.25);
-
       ctx.lineTo(x + size, y);
-
       ctx.lineTo(x + size * 0.25, y + size * 0.25);
-
       ctx.lineTo(x, y + size);
-
       ctx.lineTo(x - size * 0.25, y + size * 0.25);
-
       ctx.lineTo(x - size, y);
-
       ctx.lineTo(x - size * 0.25, y - size * 0.25);
 
       ctx.closePath();
@@ -85,16 +104,6 @@ const MagicCursor = () => {
       }
     };
 
-    if (isMobile) {
-      canvas.style.display = "block";
-
-      window.addEventListener("touchstart", handleTouchStart, {
-        passive: true,
-      });
-
-      window.addEventListener("touchmove", handleTouchMove, { passive: true });
-    }
-
     const mouse = {
       x: width / 2,
       y: height / 2,
@@ -111,11 +120,27 @@ const MagicCursor = () => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
 
-      if (cursorRef.current) {
-        cursorRef.current.style.left = `${mouse.x}px`;
+      const target = e.target;
 
-        cursorRef.current.style.top = `${mouse.y}px`;
+      const isTextField =
+        target instanceof Element &&
+        Boolean(
+          target.closest('input, textarea, select, [contenteditable="true"]'),
+        );
+
+      // Hide custom cursor over text fields.
+      // The browser's normal text cursor will appear instead.
+      if (cursor) {
+        cursor.style.display = isTextField ? "none" : "block";
+
+        if (!isTextField) {
+          cursor.style.left = `${mouse.x}px`;
+          cursor.style.top = `${mouse.y}px`;
+        }
       }
+
+      // Don't create particles while interacting with form fields.
+      if (isTextField) return;
 
       const dx = mouse.x - mouse.lastX;
       const dy = mouse.y - mouse.lastY;
@@ -132,7 +157,7 @@ const MagicCursor = () => {
       for (let i = 0; i < count; i++) {
         const behind = 10 + Math.random() * 25;
 
-        particles.push({
+        addParticle({
           x: mouse.x - dirX * behind + (Math.random() - 0.5) * 8,
 
           y: mouse.y - dirY * behind + (Math.random() - 0.5) * 8,
@@ -144,21 +169,41 @@ const MagicCursor = () => {
             -dirY * (0.5 + Math.random() * 1.2) + (Math.random() - 0.5) * 0.25,
 
           size: 1.2 + Math.random() * 2.2,
-
           life: 1,
-
           decay: 0.008 + Math.random() * 0.012,
-
           sparkle: Math.random() > 0.82,
+          mobile: false,
         });
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    const handleMouseLeave = () => {
+      if (cursor) {
+        cursor.style.display = "none";
+      }
+    };
+
+    const handleMouseEnter = () => {
+      if (cursor && !isMobile) {
+        cursor.style.display = "block";
+      }
+    };
+
+    if (isMobile) {
+      window.addEventListener("touchstart", handleTouchStart, {
+        passive: true,
+      });
+
+      window.addEventListener("touchmove", handleTouchMove, {
+        passive: true,
+      });
+    } else {
+      window.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseleave", handleMouseLeave);
+      document.addEventListener("mouseenter", handleMouseEnter);
+    }
 
     window.addEventListener("resize", resize);
-
-    let animationFrame;
 
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
@@ -181,7 +226,6 @@ const MagicCursor = () => {
           }
 
           drawStar(p.x, p.y, p.size * p.life, p.life);
-
           continue;
         }
 
@@ -197,10 +241,8 @@ const MagicCursor = () => {
 
         ctx.save();
 
-        ctx.globalAlpha = p.life * 0.7;
-
+        ctx.globalAlpha = Math.max(0, p.life * 0.7);
         ctx.shadowBlur = 10;
-
         ctx.shadowColor = "rgba(77, 140, 82, 0.8)";
 
         if (p.sparkle) {
@@ -208,10 +250,9 @@ const MagicCursor = () => {
         } else {
           ctx.beginPath();
 
-          ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, Math.max(0, p.size * p.life), 0, Math.PI * 2);
 
           ctx.fillStyle = "#6fa968";
-
           ctx.fill();
         }
 
@@ -225,12 +266,13 @@ const MagicCursor = () => {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-
       window.removeEventListener("resize", resize);
 
       window.removeEventListener("touchstart", handleTouchStart);
-
       window.removeEventListener("touchmove", handleTouchMove);
+
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseenter", handleMouseEnter);
 
       cancelAnimationFrame(animationFrame);
     };
@@ -243,8 +285,22 @@ const MagicCursor = () => {
           @media (pointer: fine) {
             html,
             body,
-            * {
+            body * {
               cursor: none !important;
+            }
+
+            input,
+            textarea,
+            select,
+            [contenteditable="true"],
+            [contenteditable="true"] * {
+              cursor: text !important;
+            }
+
+            button,
+            a,
+            [role="button"] {
+              cursor: pointer !important;
             }
           }
 
@@ -258,20 +314,24 @@ const MagicCursor = () => {
 
       <canvas
         ref={canvasRef}
+        aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-[99997]"
         style={{
           width: "100vw",
           height: "100vh",
+          pointerEvents: "none",
         }}
       />
 
       <div
         ref={cursorRef}
+        aria-hidden="true"
         className="magic-cursor pointer-events-none fixed z-[99999]"
         style={{
           left: "50%",
           top: "50%",
           transform: "translate(-2px, -2px)",
+          pointerEvents: "none",
         }}
       >
         <svg

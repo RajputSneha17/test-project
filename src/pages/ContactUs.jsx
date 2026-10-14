@@ -25,7 +25,7 @@ const ContactUs = ({ url }) => {
 
   const getProducts = async () => {
     try {
-      const response = await axios.get(`${url}/products/show`);
+      const response = await axios.get(`${url}/product/show`);
 
       if (response.data.success) {
         setProducts(response.data.products);

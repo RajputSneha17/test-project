@@ -15,7 +15,7 @@ const ProductsSection = ({ url }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`${url}/products/show`);
+      const response = await axios.get(`${url}/product/show`);
       setProducts(response.data.products);
     } catch (error) {
       console.log(error);
@@ -28,14 +28,14 @@ const ProductsSection = ({ url }) => {
 
   const filterButtons = [
     "All",
-    ...new Set(Products.map((item) => item.category)),
+    ...new Set(Products.map((item) => item.categoryName).filter(Boolean)),
   ];
 
   const filteredProducts = useMemo(() => {
     let data = [...Products];
 
     if (activeFilter !== "All") {
-      data = data.filter((item) => item.category === activeFilter);
+      data = data.filter((item) => item.categoryName === activeFilter);
     }
 
     if (sort === "low") {
@@ -92,15 +92,19 @@ const ProductsSection = ({ url }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-7 mt-10">
         {filteredProducts.map((item) => {
           const isWishlisted = wishlist.some(
-            (product) => product._id === item._id,
+            (product) => product.publicId === item.publicId,
           );
 
           return (
-            <Link key={item._id} to={`/detail/${item._id}`} className="group">
+            <Link
+              key={item.publicId}
+              to={`/detail/${item.publicId}`}
+              className="group"
+            >
               <div className="bg-white rounded-2xl overflow-hidden border border-green-100 shadow-sm hover:shadow-xl hover:shadow-green-900/10 hover:-translate-y-1 transition-all duration-300">
                 <div className="relative overflow-hidden bg-green-50">
                   <img
-                    src={item.image}
+                    src={item.images?.[0] || item.image}
                     alt={item.name}
                     className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500"
                   />
@@ -114,7 +118,7 @@ const ProductsSection = ({ url }) => {
                       e.preventDefault();
 
                       if (isWishlisted) {
-                        removeFromWishlist(item._id);
+                        removeFromWishlist(item.publicId);
                       } else {
                         addToWishlist(item);
                       }

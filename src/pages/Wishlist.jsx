@@ -14,13 +14,13 @@ const Wishlist = () => {
       ) : (
         <div className="grid md:grid-cols-3 gap-6">
           {wishlist.map((item) => {
-            const itemId = item._id || item.id;
+            const itemId = item.publicId || item.public_id || item.id || item._id;
 
             return (
               <div key={itemId} className=" p-4 shadow cursor-pointer">
-                <Link to={`/detail/${item._id}`}>
+                <Link to={`/detail/${itemId}`}>
                   <img
-                    src={item.image}
+                    src={item.image || item.images?.[0]}
                     alt={item.name}
                     className="w-full h-52 object-cover rounded-lg"
                   />

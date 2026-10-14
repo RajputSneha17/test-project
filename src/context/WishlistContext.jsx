@@ -12,11 +12,14 @@ const WishlistProvider = ({ children }) => {
     localStorage.setItem("wishlist", JSON.stringify(wishlist));
   }, [wishlist]);
 
-  const getItemId = (item) => item._id || item.id;
+  const getItemId = (item) =>
+    String(item?.publicId ?? item?.public_id ?? item?.id ?? item?._id ?? "");
 
   const addToWishlist = (product) => {
     const productId = getItemId(product);
-    const exists = wishlist.find((item) => getItemId(item) === productId);
+    const exists = wishlist.find(
+      (item) => getItemId(item) === String(productId),
+    );
 
     if (!exists) {
       setWishlist([...wishlist, product]);
@@ -24,7 +27,9 @@ const WishlistProvider = ({ children }) => {
   };
 
   const removeFromWishlist = (id) => {
-    setWishlist(wishlist.filter((item) => getItemId(item) !== id));
+    setWishlist(
+      wishlist.filter((item) => getItemId(item) !== String(id)),
+    );
   };
 
   return (

@@ -1,44 +1,60 @@
 import { useEffect, useState } from "react";
-
 import { Routes, Route } from "react-router-dom";
-
 import { jwtDecode } from "jwt-decode";
 
+// Layout
 import Nav from "./layout/Nav";
 import Footer from "./layout/Footer";
-
 import Welcome from "./layout/Welcome";
+import Rabby from "./layout/Rabby";
+import MagicCursor from "./layout/MagicCursor";
 
+// Pages
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Orders from "./pages/Orders";
 import Detail from "./pages/Detail";
 
-import Auth from "./layout/Auth";
-import Rabby from "./layout/Rabby";
-import Profile from "./pages/Profile";
+// User Information
+import OrderForSomeoneElse from "./pages/UserInfo/OrderForSomeoneElse";
+import Profile from "./pages/UserInfo/Profile";
+import Login from "./layout/Auth/Login";
+import Register from "./layout/Auth/Register";
+import ForgotPassword from "./layout/Auth/ForgotPassword";
+import ResetPassword from "./layout/Auth/ResetPassword";
+import FillAddress from "./pages/UserInfo/FillAddress";
+
 import Confirm from "./components/Cart/Confirm";
+import Checkout from "./pages/Checkout";
 import ContactUs from "./pages/ContactUs";
 import Wishlist from "./pages/Wishlist";
+import Cart from "./pages/Cart";
 
-import Grocery from "./components/Grocery";
-import FruitsVegetables from "./components/FruitsVegetables";
-import Dairy from "./components/Dairy";
-import Clothes from "./components/Clothes";
-import Household from "./components/Household";
-import Category from "./components/Category";
+// Category
+import Categories from "./pages/Category/Categories";
+import CategoryDetails from "./pages/Category/CategoryDetails";
 
-import ScrollToTop from "./components/ScrollToTop";
-import MagicCursor from "./layout/MagicCursor";
+// SubCategory
+import SubCategories from "./pages/SubCategory/SubCategories";
+import SubCategoryProducts from "./pages/SubCategory/SubCategoryProducts";
 
+// Product
+import Products from "./pages/Product/Products";
+import ProductDetails from "./pages/Product/ProductDetails";
+
+// PFC Special
 import PfcSpecial from "./pages/PfcSpecial";
+
+// Other
+import ScrollToTop from "./components/ScrollToTop";
+import { API_URL } from "./services/api";
 
 import "./App.css";
 
 const App = () => {
   const [showWelcome, setShowWelcome] = useState(true);
 
-  const url = "http://localhost:8000/api";
+  const url = API_URL;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -77,66 +93,79 @@ const App = () => {
 
   return (
     <>
-      {showWelcome && <Welcome onComplete={() => setShowWelcome(false)} />}
+      {/* {showWelcome && <Welcome onComplete={() => setShowWelcome(false)} />} */}
 
-      {!showWelcome && (
-        <>
-          <ScrollToTop />
+      {/* {!showWelcome && ( */}
+      <>
+        <ScrollToTop />
 
-          <MagicCursor />
+        <MagicCursor />
 
-          <Nav />
+        <Nav />
 
-          <main className="pt-30">
-            <Routes>
-              <Route path="/" element={<Home url={url} />} />
+        <main className="pt-30">
+          <Routes>
+            {/* ================= HOME ================= */}
+            <Route path="/" element={<Home url={url} />} />
+            {/* ================= BASIC PAGES ================= */}
+            <Route path="/about" element={<About />} />
+            <Route path="/orders" element={<Orders url={url} />} />
+            {/* ================= Authentication ================= */}
+            <Route path="/login" element={<Login url={url} />} />
+            <Route path="/register" element={<Register url={url} />} />
+            <Route
+              path="/forgot-password"
+              element={<ForgotPassword url={url} />}
+            />
+            {/* User Information */}
+            <Route path="/profile" element={<Profile url={url} />} />
+            <Route
+              path="/orderforsomeoneelse"
+              element={<OrderForSomeoneElse url={url} />}
+            />
+            <Route path="/fill-address" element={<FillAddress url={url} />} />
+            <Route path="/confirm" element={<Confirm />} />
+            <Route path="/contactUs" element={<ContactUs url={url} />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout url={url} />} />
+            <Route
+              path="/reset-password"
+              element={<ResetPassword url={url} />}
+            />
+            {/* ================= PRODUCTS ================= */}
+            <Route path="/products" element={<Products url={url} />} />
+            <Route path="/product/:id" element={<ProductDetails url={url} />} />
+            <Route path="/detail/:id" element={<Detail url={url} />} />
+            {/* ================= CATEGORIES ================= */}
+            {/* All categories */}
+            <Route path="/categories" element={<Categories url={url} />} />
+            {/* Single category */}
+            <Route
+              path="/category/:categoryId"
+              element={<SubCategories url={url} />}
+            />
+            {/* ================= SUBCATEGORIES ================= */}
+            {/* Subcategories inside a category */}
+            <Route
+              path="/category/:categoryId/subcategories"
+              element={<SubCategories url={url} />}
+            />
+            {/* Products inside a subcategory */}
+            <Route
+              path="/subcategory/:subCategoryId"
+              element={<SubCategoryProducts url={url} />}
+            />
+            {/* ================= PFC SPECIAL ================= */}
+            <Route path="/pfc-special" element={<PfcSpecial url={url} />} />
+          </Routes>
+        </main>
 
-              <Route path="/about" element={<About />} />
+        <Rabby />
 
-              <Route path="/orders" element={<Orders url={url} />} />
-
-              <Route path="/detail/:id" element={<Detail url={url} />} />
-
-              <Route path="/register" element={<Auth url={url} />} />
-
-              <Route path="/profile" element={<Profile url={url} />} />
-
-              <Route path="/confirm" element={<Confirm />} />
-
-              <Route path="/contactUs" element={<ContactUs url={url} />} />
-
-              <Route path="/wishlist" element={<Wishlist />} />
-
-              <Route path="/category/pfc-special" element={<PfcSpecial />} />
-
-              <Route path="/category/grocery" element={<Grocery url={url} />} />
-
-              <Route
-                path="/category/fruits-vegetables"
-                element={<FruitsVegetables url={url} />}
-              />
-
-              <Route path="/category/dairy" element={<Dairy url={url} />} />
-
-              <Route path="/category/clothes" element={<Clothes url={url} />} />
-
-              <Route
-                path="/category/household"
-                element={<Household url={url} />}
-              />
-
-              <Route
-                path="/category/:slug/:subcategory"
-                element={<Category url={url} />}
-              />
-            </Routes>
-          </main>
-
-          <Rabby />
-
-          <Footer />
-        </>
-      )}
+        <Footer />
+      </>
+      {/* )} */}
     </>
   );
 };

@@ -62,7 +62,7 @@ const Category = ({ url }) => {
       try {
         setLoading(true);
 
-        const response = await axios.get(`${url}/products/show`);
+        const response = await axios.get(`${url}/product/show`);
 
         setProducts(response.data.products || []);
       } catch (error) {
@@ -79,7 +79,7 @@ const Category = ({ url }) => {
   const categoryProducts = useMemo(() => {
     return products.filter((product) => {
       const productCategory = String(
-        product.category || product.categoryName || "",
+        product.categorySlug || product.categoryName || "",
       )
         .toLowerCase()
         .replaceAll(" ", "-");
@@ -244,7 +244,7 @@ const Category = ({ url }) => {
 
     return (
       <Link
-        to={`/detail/${product._id}`}
+        to={`/detail/${product.publicId}`}
         className="group overflow-hidden mt-10  rounded-[24px] border border-[#dcebd8] bg-white transition duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(52,100,57,0.12)]"
       >
         <div className="relative h-60 overflow-hidden bg-[#f3f8f0]">
@@ -582,7 +582,7 @@ const Category = ({ url }) => {
             ) : (
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-3">
                 {filteredProducts.map((product) => (
-                  <ProductCard key={product._id} product={product} />
+                  <ProductCard key={product.publicId} product={product} />
                 ))}
               </div>
             )}
